@@ -86,17 +86,20 @@ CATEGORY_MAP = {
     89: 'hair drier',
     90: 'toothbrush'
 }
-WEIGHTS = "./weights/fasterrcnn_resnet50_fpn_coco-258fb6c6.pth"
+# WEIGHTS = "./weights/fasterrcnn_resnet50_fpn_coco-258fb6c6.pth"
 
 
 class Detector(object):
-    def __init__(self, threshold=0.7, category_map=None, weights=WEIGHTS):
+    def __init__(self, threshold=0.7, category_map=None, weights=None):
+        if weights is None:
+            self.pytorch_model = fasterrcnn_resnet50_fpn(pretrained=True, pretrained_backbone=True)
+        else:
+            self.pytorch_model = fasterrcnn_resnet50_fpn(pretrained=False, pretrained_backbone=False)
+            self.pytorch_model.load_state_dict(torch.load(weights))
         if category_map is None:
             category_map = CATEGORY_MAP
         self.category_map = category_map
         self.threshold = threshold
-        self.pytorch_model = fasterrcnn_resnet50_fpn(pretrained=False, pretrained_backbone=False)
-        self.pytorch_model.load_state_dict(torch.load(weights))
         self.img_numpy = None
         self.img_tensor = None
         self.img_out = None
