@@ -1,0 +1,13 @@
+{% extends "index.html" %}
+{% block images %}
+    {% for entry in entries.files %}
+        <div class="col-lg-11 col-md-11 col-11 d-block mb-4 h-100">
+            <img class="image animated zoomIN img-fluid img-thumbnail"
+                 src="{{ entry.path }}"
+                 alt="{{ entry.filename }}">
+            <div class="d-flex justify-content-center">
+                <button id="{{ entry.filename }}" type="button" class="tochangeimg btn btn-success">Change to detected</button>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}
